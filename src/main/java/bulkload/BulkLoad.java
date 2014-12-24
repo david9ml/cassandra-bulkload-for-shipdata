@@ -17,6 +17,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.FileReader;
 import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -37,7 +38,7 @@ import org.apache.cassandra.io.sstable.CQLSSTableWriter;
  */
 public class BulkLoad
 {
-    public static final String CSV_URL = "http://real-chart.finance.yahoo.com/table.csv?s=%s";
+    public static final String CSV_URL = "/home/yanchao/newaa.csv";
 
     /** Default output directory */
     public static final String DEFAULT_OUTPUT_DIR = "./data";
@@ -45,9 +46,9 @@ public class BulkLoad
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     /** Keyspace name */
-    public static final String KEYSPACE = "quote";
+    public static final String KEYSPACE = "test_bulkloader";
     /** Table name */
-    public static final String TABLE = "historical_prices";
+    public static final String TABLE = "target_history";
 
     /**
      * Schema for bulk loading table.
@@ -55,25 +56,33 @@ public class BulkLoad
      * otherwise CQLSSTableWriter throws exception.
      */
     public static final String SCHEMA = String.format("CREATE TABLE %s.%s (" +
-                                                          "ticker ascii, " +
-                                                          "date timestamp, " +
-                                                          "open decimal, " +
-                                                          "high decimal, " +
-                                                          "low decimal, " +
-                                                          "close decimal, " +
-                                                          "volume bigint, " +
-                                                          "adj_close decimal, " +
-                                                          "PRIMARY KEY (ticker, date) " +
-                                                      ") WITH CLUSTERING ORDER BY (date DESC)", KEYSPACE, TABLE);
+                                                          "unique_id varchar, " +
+                                                          "acquisition_time varchar, " +
+                                                          "target_type int, " +
+                                                          "data_source int, " +
+                                                          "status int, " +
+                                                          "longitude varchar, " +
+                                                          "latitude varchar, " +
+                                                          "speed double, " +
+                                                          "conversion double, " +
+                                                          "add1 double, " +
+                                                          "add2 int, " +
+                                                          "cog int, " +
+                                                          "true_head int, " +
+                                                          "power int, " +
+                                                          "extend varchar, " +
+                                                          "primary key(unique_id,acquisition_time) " +
+                                                      ")", KEYSPACE, TABLE);
+
 
     /**
      * INSERT statement to bulk load.
      * It is like prepared statement. You fill in place holder for each data.
      */
     public static final String INSERT_STMT = String.format("INSERT INTO %s.%s (" +
-                                                               "ticker, date, open, high, low, close, volume, adj_close" +
+                                                               "unique_id, acquisition_time, target_type, data_source, status, longitude, latitude, speed, conversion, add1, add2, cog, true_head, power, extend" +
                                                            ") VALUES (" +
-                                                               "?, ?, ?, ?, ?, ?, ?, ?" +
+                                                               "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?" +
                                                            ")", KEYSPACE, TABLE);
 
     public static void main(String[] args)
@@ -81,7 +90,7 @@ public class BulkLoad
         if (args.length == 0)
         {
             System.out.println("usage: java bulkload.BulkLoad <list of ticker symbols>");
-            return;
+            //return;
         }
 
         // magic!
@@ -97,6 +106,8 @@ public class BulkLoad
         // Prepare SSTable writer
         CQLSSTableWriter.Builder builder = CQLSSTableWriter.builder();
         // set output directory
+        //System.out.println(SCHEMA);
+        //System.out.println(INSERT_STMT);
         builder.inDirectory(outputDir)
                // set target schema
                .forTable(SCHEMA)
@@ -107,9 +118,10 @@ public class BulkLoad
                .withPartitioner(new Murmur3Partitioner());
         CQLSSTableWriter writer = builder.build();
 
-        for (String ticker : args)
-        {
-            HttpURLConnection conn;
+        //for (String ticker : args)
+        //{
+            //HttpURLConnection conn;
+            /**
             try
             {
                 URL url = new URL(String.format(CSV_URL, ticker));
@@ -119,19 +131,22 @@ public class BulkLoad
             {
                 throw new RuntimeException(e);
             }
+            */
 
             try (
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                CsvListReader csvReader = new CsvListReader(reader, CsvPreference.STANDARD_PREFERENCE)
+                BufferedReader reader = new BufferedReader(new FileReader(CSV_URL));
+                CsvListReader csvReader = new CsvListReader(reader, CsvPreference.STANDARD_PREFERENCE);
             )
             {
+                /**
                 if (conn.getResponseCode() != HttpURLConnection.HTTP_OK)
                 {
                     System.out.println("Historical data not found for " + ticker);
                     continue;
                 }
+                */
 
-                csvReader.getHeader(true);
+                csvReader.getHeader(false);
 
                 // Write to SSTable while reading data
                 List<String> line;
@@ -139,21 +154,45 @@ public class BulkLoad
                 {
                     // We use Java types here based on
                     // http://www.datastax.com/drivers/java/2.0/com/datastax/driver/core/DataType.Name.html#asJavaClass%28%29
-                    writer.addRow(ticker,
-                                  DATE_FORMAT.parse(line.get(0)),
-                                  new BigDecimal(line.get(1)),
-                                  new BigDecimal(line.get(2)),
-                                  new BigDecimal(line.get(3)),
-                                  new BigDecimal(line.get(4)),
-                                  Long.parseLong(line.get(5)),
-                                  new BigDecimal(line.get(6)));
+                    System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                    System.out.println(line.get(0));
+                    System.out.println(line.get(1));
+                    System.out.println(line.get(2));
+                    System.out.println(line.get(3));
+                    System.out.println(line.get(4));
+                    System.out.println(line.get(5));
+                    System.out.println(line.get(6));
+                    System.out.println(line.get(7));
+                    System.out.println(line.get(8));
+                    System.out.println(line.get(9));
+                    System.out.println(line.get(10));
+                    System.out.println(line.get(11));
+                    System.out.println(line.get(12));
+                    System.out.println(line.get(13));
+                    System.out.println(line.get(14));
+                    System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                    writer.addRow(new String(line.get(0)),
+                                  new String(line.get(1)),
+                                  new Integer(line.get(2)),
+                                  new Integer(line.get(3)),
+                                  new Integer(line.get(4)),
+                                  new String(line.get(5)),
+                                  new String(line.get(6)),
+                                  new Double(line.get(7)),
+                                  new Double(line.get(8)),
+                                  new Double(line.get(9)),
+                                  new Integer(line.get(10)),
+                                  new Integer(line.get(11)),
+                                  new Integer(line.get(12)),
+                                  new Integer(line.get(13)),
+                                  new String(line.get(14)));
                 }
             }
-            catch (InvalidRequestException | ParseException | IOException e)
+            catch (InvalidRequestException | IOException e)
             {
                 e.printStackTrace();
             }
-        }
+        //}
 
         try
         {

@@ -15,5 +15,5 @@ dependencies {
 task run(type:JavaExec) {
     main = 'bulkload.BulkLoad'
     classpath = sourceSets.main.runtimeClasspath
-    args 'ORCL','YHOO','GOOG'
+    //args 'ORCL','YHOO','GOOG'
 }

@@ -1,14 +1,7 @@
-CREATE KEYSPACE IF NOT EXISTS quote WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
-USE quote;
-CREATE TABLE IF NOT EXISTS historical_prices (
-    ticker ascii,
-    date timestamp,
-    open decimal,
-    high decimal,
-    low decimal,
-    close decimal,
-    volume bigint,
-    adj_close decimal,
-    PRIMARY KEY (ticker, date)
-) WITH CLUSTERING ORDER BY (date DESC);
-
+CREATE KEYSPACE IF NOT EXISTS test_bulkloader WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
+USE test_bulkloader;
+CREATE TABLE IF NOT EXISTS target_history(
+    unique_id varchar,
+    acquisition_time varchar,
+    primary key(unique_id,acquisition_time)
+);
