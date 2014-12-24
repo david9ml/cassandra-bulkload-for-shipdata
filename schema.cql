@@ -3,5 +3,19 @@ USE test_bulkloader;
 CREATE TABLE IF NOT EXISTS target_history(
     unique_id varchar,
     acquisition_time varchar,
-    primary key(unique_id,acquisition_time)
-);
+    target_type int,
+    data_source int,
+    status int,
+    longitude varchar,
+    latitude varchar,
+    speed double,
+    conversion double,
+    add1 double,
+    add2 int,
+    cog int,
+    true_head int,
+    power int,
+    extend varchar,
+    primary key(unique_ID,acquisition_time)
+    );
+
