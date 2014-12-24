@@ -171,6 +171,7 @@ public class BulkLoad
                     System.out.println(line.get(13));
                     System.out.println(line.get(14));
                     System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                    //if
                     writer.addRow(new String(line.get(0)),
                                   new String(line.get(1)),
                                   new Integer(line.get(2)),
@@ -184,7 +185,7 @@ public class BulkLoad
                                   new Integer(line.get(10)),
                                   new Integer(line.get(11)),
                                   new Integer(line.get(12)),
-                                  new Integer(line.get(13)),
+                                  line.get(13) == null ? null : new Integer(line.get(13)),
                                   new String(line.get(14)));
                 }
             }
