@@ -154,6 +154,7 @@ public class BulkLoad
                 {
                     // We use Java types here based on
                     // http://www.datastax.com/drivers/java/2.0/com/datastax/driver/core/DataType.Name.html#asJavaClass%28%29
+                    /**
                     System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                     System.out.println(line.get(0));
                     System.out.println(line.get(1));
@@ -171,6 +172,7 @@ public class BulkLoad
                     System.out.println(line.get(13));
                     System.out.println(line.get(14));
                     System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                    **/
                     //if
                     writer.addRow(new String(line.get(0)),
                                   new String(line.get(1)),
