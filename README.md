@@ -1,6 +1,6 @@
 # cassandra-bulkload-example 
 
-Sample SSTable generating and bulk loading code for 中国航运中心 ship data csv.
+Sample SSTable generating and bulk loading code for 上海航运研究中心 ship data csv.
 
 ## Generating SSTables
 
