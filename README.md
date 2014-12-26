@@ -1,7 +1,6 @@
 # cassandra-bulkload-example 
 
-Sample SSTable generating and bulk loading code for DataStax [Using Cassandra Bulk Loader, Updated](http://www.datastax.com/dev/blog/using-the-cassandra-bulk-loader-updated) blog post.
-This fetches historical prices from [Yahoo! Finance](http://finance.yahoo.com/) in CSV format, and turn them to SSTables.
+Sample SSTable generating and bulk loading code for 中国航运中心 ship data csv.
 
 ## Generating SSTables
 
@@ -23,8 +22,7 @@ Then, load SSTables to Cassandra using `sstableloader`:
 
 (assuming you have `cqlsh` and `sstableloader` in your `$PATH`)
 
-## Check loaded data
-
+## Check loaded data example
 
     $ bin/cqlsh
     Connected to Test Cluster at 127.0.0.1:9042.
@@ -41,4 +39,4 @@ Then, load SSTables to Cassandra using `sstableloader`:
 
     (3 rows)
 
-Voilà!
+OK!
